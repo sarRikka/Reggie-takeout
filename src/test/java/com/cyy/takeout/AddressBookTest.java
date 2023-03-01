@@ -14,7 +14,7 @@ import java.util.List;
 public class AddressBookTest {
     
     @Autowired
-    AddressBookMapper mapper;
+    AddressBookMapper mapper;;
     
     @Test void Test()
     {
