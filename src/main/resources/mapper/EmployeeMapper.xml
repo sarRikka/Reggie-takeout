@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--mybatis-3-mapper.dtd是约束文件的名称，扩展名是dtd-->
+<!--
+    Long id;
+    String idNumber;
+    String name;//职位
+    String userName;//真实姓名
+    String password;
+    String phone;
+    String sex;
+    int status;
+    LocalDateTime updateTime;
+    LocalDateTime createTime;
+    Long createUser;
+    Long updateUser;
+
+
+-->
+<mapper namespace="com.cyy.takeout.mapper.EmployeeMapper">
+    
+    <resultMap id="EmployeeMap" type="com.cyy.takeout.entity.Employee">
+        <result property="userName" column="username"/>
+        <result property="idNumber" column="id_number"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="createUser" column="create_user"/>
+        <result property="updateUser" column="update_user"/>
+    </resultMap>
+    
+    <select id="selectById" resultMap="EmployeeMap">
+        select * from employee where id = #{id}
+    </select>
+    
+    <delete id="deleteById" >
+        delete from employee where id=#{id}
+    </delete>
+    
+    <update id="update">
+        update employee
+        <set>
+            <if test="userName != null"> username = #{userName},</if>
+            <if test="password != null"> password = #{password},</if>
+            <if test="name != null"> name = #{name},</if>
+            <if test="phone != null"> phone = #{phone},</if>
+            <if test="status != null">status = #{status}</if>
+        </set>
+        <where>
+            id= #{id}
+        </where>
+    </update>
+    
+    <insert id="add" >
+        insert into employee(username,password,phone,sex,id_number,status,create_time,
+                             update_time,create_user,update_user,name) 
+                             values(#{userName},#{password},#{phone},#{sex},#{idNumber},
+                                    #{status},#{createTime},#{updateTime},#{createUser},#{updateUser},#{name})
+    </insert>
+    
+    <select id="getAll" resultType="int">
+        select count(*) from employee
+    </select>
+
+    <select id="selectByName" resultMap="EmployeeMap">
+        select * from employee 
+        where username = #{userName}
+    </select>
+    
+    <select id="page" resultMap="EmployeeMap">
+        select * from employee
+        <where>
+            <if test="name != null">
+                username like concat('%',#{name},'%')
+            </if>
+        </where>
+        limit #{begin},#{num}
+    </select>
+    
+    <select id="getCount" resultType="int">
+        select count(*) from employee
+        <where>
+            <if test="name != null">
+                username like concat('%',#{name},'%')
+            </if>
+        </where>
+    </select>
+    
+</mapper>

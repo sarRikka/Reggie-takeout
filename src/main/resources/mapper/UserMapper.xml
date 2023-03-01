@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cyy.takeout.mapper.UserMapper">
+    
+    <resultMap id="userMap" type="com.cyy.takeout.entity.User">
+        <result property="idNumber" column="id_number"/>
+    </resultMap>
+    
+    <select id="getById" resultMap="userMap">
+        select * from user 
+        where id = #{id}
+    </select>
+    
+    <select id="selectByPhone" resultMap="userMap">
+        select * from user 
+        <where>
+            <if test="phone != null">
+                phone = #{phone}
+            </if>
+        </where>
+    </select>
+    
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into user(name,phone,sex,id_number,avatar,status)
+        values(#{name},#{phone},#{sex},#{idNumber},#{avatar},#{status})
+    </insert>
+    
+    
+</mapper>

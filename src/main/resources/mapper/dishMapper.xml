@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cyy.takeout.mapper.DIshMapper">
+
+    <resultMap id="dishMap" type="com.cyy.takeout.entity.Dish">
+        <result property="categoryId" column="category_id"/>
+        <result property="isDeleted" column="is_deleted"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="createUser" column="create_user"/>
+        <result property="updateUser" column="update_user"/>
+    </resultMap>
+    
+    <insert id="save">
+        insert into dish(name,category_id,price,code,image,description,status,sort,
+                         is_deleted,create_time,create_user,update_time,update_user)
+                         values(#{name},#{categoryId},#{price},#{code},#{image},
+                                #{description},#{status},#{sort},#{isDeleted},
+                                #{createTime},#{createUser},#{updateTime},#{updateUser})
+    </insert>
+    
+    <update id="update">
+        update dish
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="categoryId != null">
+                category_id = #{categoryId},
+            </if> 
+            <if test="code != null">
+                code = #{code},
+            </if>
+            <if test="image != null">
+                image = #{image},
+            </if>
+            <if test="description != null">
+                description = #{description},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="sort != null">
+                sort = #{sort},
+            </if>
+            <if test="isDeleted != null">
+                is_deleted = #{isDeleted}
+            </if>
+        </set>
+        <where>
+            id = #{id}
+        </where>
+    </update>
+    
+    <select id="getById" resultMap="dishMap">
+        select * from dish 
+        where id = #{id}
+    </select>
+    
+    <select id="list" resultMap="dishMap">
+        select * from dish
+        <where>
+            <if test="categoryId != null">
+                category_id = #{categoryId}
+            </if>
+        </where>
+    </select>
+
+    <select id="getByName" resultMap="dishMap">
+        select * from dish
+        <where>
+            <if test="name != null">
+                name = #{name}
+            </if>
+        </where>
+    </select>
+    
+    <select id="page" resultMap="dishMap">
+        select * from dish
+        <where>
+            <if test="name != null">
+                name like concat('%',#{name},'%')
+            </if>
+        </where>
+        limit #{diff},#{pageSize}
+    </select>
+    
+    <delete id="delete">
+        delete from dish
+        where id = #{id}
+    </delete>
+    
+    <select id="count" resultType="int">
+        select count(*) from dish
+    </select>
+
+
+
+</mapper>

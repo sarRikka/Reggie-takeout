@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cyy.takeout.mapper.ShoppingCartMapper">
+    
+    <resultMap id="ShoppingCartMap" type="com.cyy.takeout.entity.ShoppingCart">
+        <result property="userId" column="user_id"/>
+        <result property="dishId" column="dish_id"/>
+        <result property="setmealId" column="setmeal_id"/>
+        <result property="dishFlavor" column="dish_flavor"/>
+    </resultMap>
+
+    <select id="list" resultMap="ShoppingCartMap">
+        select * from shopping_cart
+        where user_id = #{userId}
+    </select>
+    
+    <delete id="clean">
+        delete from shopping_cart
+        where user_id = #{userId}
+    </delete>
+    
+    <insert id="add" keyProperty="id" useGeneratedKeys="true">
+        insert into shopping_cart(name,image,user_id,dish_id,setmeal_id,dish_flavor,number,amount,create_time)
+        values(#{name},#{image},#{userId},#{dishId},#{setmealId},#{dishFlavor},#{number},#{amount},#{createTime})
+    </insert>
+    
+    <update id="update">
+        update shopping_cart
+        <set>
+            <if test="number != null">
+                number = #{number},
+            </if>
+            <if test="amount != null">
+                amount = #{amount}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    
+    <select id="getOne" resultMap="ShoppingCartMap">
+        select * from shopping_cart
+        <where>
+            <if test="dishId != null">
+                dish_id = #{dishId}
+            </if>
+            <if test="setmealId != null">
+                and setmeal_id = #{setmealId}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+        </where>
+    </select>
+    
+    
+</mapper>

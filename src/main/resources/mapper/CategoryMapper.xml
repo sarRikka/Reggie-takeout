@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cyy.takeout.mapper.CategoryMapper">
+    
+    <resultMap id="CategoryMap" type="com.cyy.takeout.entity.Category">
+        <result property="updateTime" column="update_time" />
+        <result property="updateUser" column="update_user" />
+        <result property="createTime" column="create_time" />
+        <result property="createUser" column="create_user" />
+    </resultMap>
+    
+    <insert id="save">
+        insert into category(type,name,sort,update_time,update_user,create_time,create_user)
+        values(#{type},#{name},#{sort},#{updateTime},#{updateUser},#{createTime},#{createUser}) 
+    </insert> 
+    
+    <delete id="delete">
+        delete from category
+        where id = #{id}
+    </delete>
+    
+    <update id="update">
+        update category
+        <set>
+            <if test="type != null">
+                type= #{type},
+            </if>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="sort != null">
+                sort = #{sort}
+            </if>                
+        </set>
+        <where>
+            id = #{id}
+        </where>
+    </update>
+    
+    <select id="list" resultMap="CategoryMap">
+        select * from category
+        <where>
+            <if test="type != null and type != 0">
+                type = #{type}
+            </if>
+            <if test="name != null">
+                and name = #{name}
+            </if>
+            <if test="sort != null and sort != 0">
+                and sort = #{sort}
+            </if>
+            <if test="id != null and id!= 0">
+                and id = #{id}
+            </if>
+        </where>
+    </select>
+
+    <select id="page" resultMap="CategoryMap">
+        select * from category
+        limit #{diff},#{num}
+    </select>
+
+    <select id="count" resultType="int">
+        select count(*) from category
+                          
+    </select>
+    
+</mapper>

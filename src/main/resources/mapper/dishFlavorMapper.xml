@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cyy.takeout.mapper.DishFlavorMapper">
+
+    <resultMap id="flavorMap" type="com.cyy.takeout.entity.DishFlavor">
+        <result property="dishId" column="dish_id" />
+        <result property="isDelete" column="is_delete"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="createUser" column="create_user"/>
+        <result property="updateUser" column="update_user"/>
+    </resultMap>
+    
+    <insert id="insert">
+        insert into dish_flavor(dish_id,name,value,is_deleted,create_time,create_user,update_time,update_user)
+        values(#{dishId},#{name},#{value},#{isDelete},#{createTime},#{createUser},#{updateTime},#{updateUser})
+    </insert>
+    
+    <delete id="delete">
+        delete from dish_flavor
+        where id = #{id}
+    </delete>
+    
+    <select id="selectByDishId" resultMap="flavorMap">
+        select * from dish_flavor
+        where dish_id = #{dishId}
+    </select>
+    
+    
+</mapper>
